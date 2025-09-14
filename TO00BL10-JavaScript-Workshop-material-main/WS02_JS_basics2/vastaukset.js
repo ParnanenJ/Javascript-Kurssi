@@ -19,4 +19,4 @@
 	document.write("<p>")
 
 	//Tehtävä 3
-	if 
+	
