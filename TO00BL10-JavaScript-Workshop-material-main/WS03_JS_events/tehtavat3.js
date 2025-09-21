@@ -70,3 +70,9 @@ nappi.addEventListener('click', tarkistaKentta);
 tarkistaKentta();
 
 // Tehtävä 4
+const cord = document.getElementById("coordinates");
+cord.addEventListener('mousemove', function(){
+  let x = event.clientX;
+  let y = event.clientY;
+  cord.innerHTML = "X: " + x + ", Y: " + y;
+})
