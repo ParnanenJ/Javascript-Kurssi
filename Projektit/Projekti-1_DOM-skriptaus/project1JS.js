@@ -1,34 +1,78 @@
 const lomake = document.querySelector("#lomake");
-const lista = document.querySelector("#lista")
-// Luodaan localstorage avaimille muuttuja
+const lista = document.querySelector("#lista");
 let localid = 1;
 
-//Heataan localstoragen avaimet
+
+// 🔧 Apufunktio: lisää uusi rivi taulukkoon (tekstin + poistonapin kera)
+function lisaaRivi(id, value) {
+  const row = lista.insertRow();
+  const cellText = row.insertCell();
+  const cellButton = row.insertCell();
+
+  // Lisätään riveille näkymätön id
+  row.dataset.id = id;
+  // Tekstisolu
+  cellText.textContent = value;
+
+  // Poistonappi
+  const btn = document.createElement("button");
+  btn.textContent = "Poista";
+  btn.addEventListener("click", function() {
+    // Poista rivi taulukosta ja LocalStoragesta
+    localStorage.removeItem(id);
+    row.remove();
+  });
+
+  // Lisätään nappi taulukkoon
+  cellButton.appendChild(btn);
+}
+
+// 🔄 Lataa LocalStoragesta tiedot sivun latauksessa
 const keys = Object.keys(localStorage)
-  .map(Number)          // muutetaan numeroksi
-  .sort((a, b) => a - b); // järjestetään nousevasti
+  .map(Number)
+  .sort((a, b) => a - b);
 
 for (let key of keys) {
   const value = localStorage.getItem(key);
-  lista.insertRow().insertCell().textContent = value;
-  console.log(key, value);
+  lisaaRivi(key, value);
 }
 
-// Jos localStoragessa on jotain: 
-// niin tallennetaan se localstorageen ja lisätään siihen +1, jotta localstorage avaimet jatkuvat seuraavasta luvusta
+// Lisätään kuuntelia listan riveille
+let tehdyt = []
+
+// Kun riviä klikkaa merkataan se tehdyksi (jos klikattu rivi on tehty muutetaan se takaisin tekemättömäksi)
+document.querySelectorAll("tr").forEach(rivi => {
+  rivi.addEventListener("click", function() {
+
+    if (tehdyt.includes(rivi.dataset.id)) {
+      tehdyt = tehdyt.filter(item => item !== rivi.dataset.id);
+      this.style.backgroundColor = "#192841";
+      this.style.textDecoration = "none";
+    } else {
+      tehdyt.push(rivi.dataset.id);
+      this.style.backgroundColor = "red";
+      this.style.textDecoration = "line-through";
+    }
+
+  });
+});
+
+// 🧠 Päivitä seuraava id
 if (localStorage.length > 0) {
-  localid = localStorage.length + 1;
+  localid = Math.max(...keys) + 1; // varmistetaan ettei mene sekaisin poistojen jälkeen
 }
 
-lomake.addEventListener("submit", function() {
-
-  let tieto = lomake.elements["kentta1"].value;
+// 📝 Lomakkeen käsittely
+lomake.addEventListener("submit", function () {
+  let tieto = lomake.elements["kentta1"].value.trim();
 
   if (tieto.length < 3) {
-    alert("väärin");
+    alert("Liian lyhyt teksti (väh. 3 merkkiä)");
   } else {
-    // Tallenna tieto ja kasvata id:tä
+    // Tallenna tieto LocalStorageen
     localStorage.setItem(localid, tieto);
+    // Näytä se listassa
+    lisaaRivi(localid, tieto);
     localid++;
   }
 });

@@ -27,3 +27,7 @@ table{
     border-color: white;
 }
 
+tr:hover{
+    background-color: gray;
+}
+
