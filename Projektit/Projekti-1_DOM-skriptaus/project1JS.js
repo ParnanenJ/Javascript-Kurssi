@@ -3,7 +3,7 @@ const lista = document.querySelector("#lista");
 let localid = 1;
 
 
-// 🔧 Apufunktio: lisää uusi rivi taulukkoon (tekstin + poistonapin kera)
+// Lisää uusi rivi taulukkoon (tekstin + poistonappi)
 function lisaaRivi(id, value) {
   const row = lista.insertRow();
   const cellText = row.insertCell();
@@ -27,7 +27,7 @@ function lisaaRivi(id, value) {
   cellButton.appendChild(btn);
 }
 
-// 🔄 Lataa LocalStoragesta tiedot sivun latauksessa
+// Lataa LocalStoragesta tiedot sivun latauksessa
 const keys = Object.keys(localStorage)
   .map(Number)
   .sort((a, b) => a - b);
@@ -57,17 +57,21 @@ document.querySelectorAll("tr").forEach(rivi => {
   });
 });
 
-// 🧠 Päivitä seuraava id
+// Päivitä seuraava id
 if (localStorage.length > 0) {
   localid = Math.max(...keys) + 1; // varmistetaan ettei mene sekaisin poistojen jälkeen
 }
 
-// 📝 Lomakkeen käsittely
-lomake.addEventListener("submit", function () {
+// Lomakkeen käsittely
+lomake.addEventListener("submit", function (event) {
   let tieto = lomake.elements["kentta1"].value.trim();
 
-  if (tieto.length < 3) {
-    alert("Liian lyhyt teksti (väh. 3 merkkiä)");
+  if (tieto.length < 1) {
+    event.preventDefault();
+    alert("Kenttä ei voi olla tyhjä");
+    lomake.elements["kentta1"].style.border = "solid";
+    lomake.elements["kentta1"].style.borderColor = "red";
+
   } else {
     // Tallenna tieto LocalStorageen
     localStorage.setItem(localid, tieto);
