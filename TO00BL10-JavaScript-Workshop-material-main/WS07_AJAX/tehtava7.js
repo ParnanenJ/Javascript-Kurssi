@@ -1,3 +1,5 @@
+
+// Tehtävä 1
 var text = '{ "employees" : [' +
     '{ "firstName":"John" , "lastName":"Doe" , "job":"Manager" },' +
     '{ "firstName":"Anna" , "lastName":"Smith" , "job":"Marketing" },' +
@@ -73,7 +75,54 @@ nappi4.addEventListener("click", function(){
                 solu4.appendChild(kuva);
                 dataruutu2.appendChild(taulukko);
             });
-        }
+        };
     };
     tieto.send();
 });
+
+// Tehtävä 3
+
+const dataruutu3 = document.getElementById("weatherdata");
+const nappi5 = document.querySelectorAll("button")[4];
+
+nappi5.addEventListener("click", function(){
+    var tieto = new XMLHttpRequest();
+    tieto.open('GET', 'https://api.openweathermap.org/data/2.5/weather?q=Helsinki&units=metric&mode=JSON&APPID=ff64c247a136f706923d1ee0d55d71e2', true);
+    tieto.onreadystatechange = function() {
+        if (tieto.readyState === 4 && tieto.status === 200){
+            let data = JSON.parse(tieto.responseText);
+            dataruutu3.textContent = "";
+            dataruutu3.textContent = `Lämpötila: ${data.main.temp} °C |  Pilvisyys: ${data.clouds.all}% | Ilmankosteus: ${data.main.humidity}% `;
+        };
+    };
+    tieto.send();
+});
+
+let city = document.getElementById("city");
+city.addEventListener("change", function(){
+    let kaupunki = city.value;
+    tiedonhaku(kaupunki);
+});
+
+const haku = document.getElementById("search");
+const hk = document.getElementById("citysearch");
+
+haku.addEventListener("click", function(){
+    let kaupunki = hk.value;
+    hk.value = "";
+    tiedonhaku(kaupunki);
+})
+
+function tiedonhaku(k){
+    var tieto = new XMLHttpRequest();
+    tieto.open('GET', `https://api.openweathermap.org/data/2.5/weather?q=${k}&units=metric&mode=JSON&APPID=ff64c247a136f706923d1ee0d55d71e2`, true);
+
+    tieto.onreadystatechange = function() {
+        if (tieto.readyState === 4 && tieto.status === 200) {
+            let data = JSON.parse(tieto.responseText);
+            dataruutu3.textContent = "";
+            dataruutu3.textContent = `${k}\nLämpötila: ${data.main.temp} °C | Pilvisyys: ${data.clouds.all}% | Ilmankosteus: ${data.main.humidity}%`;
+        }
+    };
+    tieto.send();
+};
