@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Workshop 9</title>
-        <link rel="stylesheet" href="css/styles.css">
 		<style>
             div {
                 width: 200px;
@@ -60,7 +59,7 @@
             <input type="button" name="button4" id="button4" value="SlideDown main contents">
             <input type="button" name="button5" id="button5" value="Animate">
         </p>
-        <ol>
+        <ol id="mainContent" style="position: relative;">
             <li>Fade in the main heading of the page</li>
             <li>Fade out the main heading of the page</li>
             <li>SlideUp the main contents of the page</li>
@@ -76,13 +75,16 @@
         </ol>
         <p>Select an item from the list.</p>
         <p>
-            <select name="mySelect" id="mySelect" onchange="">
-                <option value="first">First item</option>
-                <option value="second">Second item</option>
-                <option value="third">Third item</option>
+            <select name="mySelect" id="mySelect">
+                <option value="first">Uutinen 1</option>
+                <option value="second">Uutinen 2</option>
+                <option value="third">Uutinen 3</option>
             </select>
         </p>
         <div id="ajax" style="border: 1px solid black; width: 400px;">
         </div>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="tehtava9.js"></script>
     </body>
 </html>
