@@ -51,11 +51,11 @@ $('#button5').on('click', function(){
 // Tehtävä 4
 
 $('#mySelect').on('change', function() {
-    const selected = $(this).val(); // first, second, third
+    const selected = $(this).val();
 
     // Hae RSS XML
     $.get('https://meijastiina.github.io/news_rss_topstories.xml', function(data) {
-        $('#ajax').empty(); // tyhjennä div ennen uuden sisällön lisäämistä
+        $('#ajax').empty();
 
         const items = $(data).find('item');
 
